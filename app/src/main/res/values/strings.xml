@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">EmergentCall</string>
+    <string name="action_settings">Settings</string>
+    <color name="red">#FF0000</color>
+</resources>
