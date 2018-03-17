@@ -76,8 +76,8 @@ public class EmergentCall extends AppCompatActivity {
                             ((TextView)findViewById(R.id.content_emergent_call)).setText(msg);*/
 
                             //Set my current location
-                            myCurrentLocation.setLatitude(location.getLatitude());
-                            myCurrentLocation.setLongitude(location.getLongitude());
+                            //myCurrentLocation.setLatitude(location.getLatitude());
+                            //myCurrentLocation.setLongitude(location.getLongitude());
                     //    }
                   //  }
                 //});
