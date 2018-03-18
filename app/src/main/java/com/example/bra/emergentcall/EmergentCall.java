@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 //import com.google.android.gms.appindexing.Action;
 //import com.google.android.gms.appindexing.AppIndex;
@@ -133,7 +134,8 @@ public class EmergentCall extends AppCompatActivity {
         return true;
     }
 
-    public void notify(){
+
+    public void notifyEmergency(){
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         final Location myCurrentLocation = new Location("dummy");
@@ -228,22 +230,25 @@ public class EmergentCall extends AppCompatActivity {
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
         FileOutputStream outputStream = null;
+        String path = getFilesDir().getAbsolutePath();
         try {
-            outputStream = new FileOutputStream(new File("contacts"),true);
+            outputStream = new FileOutputStream(new File(path+"/contacts"),true);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        ;
+
 
         if (reqCode == PICK_CONTACT) {
             if (resultCode == ActionBarActivity.RESULT_OK) {
                 Uri contactData = data.getData();
+                //String[] projection    = new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                     //   ContactsContract.CommonDataKinds.Phone.NUMBER};
                 Cursor c = getContentResolver().query(contactData,null,null,null,null);
 
 
                 while(c.moveToNext()){
-                    String name = c.getString(c.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                    String phone = c.getString(c.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    String name = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+                    String phone = c.getString(c.getColumnIndexOrThrow(ContactsContract.PhoneLookup.NORMALIZED_NUMBER));
                     phone += phone+"\n";
                     Toast.makeText(this, "Seçtiğiniz kişi: "+ name, Toast.LENGTH_LONG).show();
                     try {
@@ -258,6 +263,15 @@ public class EmergentCall extends AppCompatActivity {
         }
     }
 
+    public void listContacts(View v) throws FileNotFoundException {
+        String path = getFilesDir().getAbsolutePath();
+        File file = new File(path+"/contacts");
+        Scanner scan = new Scanner(file);
+
+        while(scan.hasNextLine()){
+            Toast.makeText(this, scan.nextLine(), Toast.LENGTH_LONG).show();
+        }
+    }
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
