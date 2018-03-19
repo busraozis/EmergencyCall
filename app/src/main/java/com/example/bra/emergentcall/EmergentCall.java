@@ -4,7 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -18,8 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +36,7 @@ import com.google.android.gms.appindexing.Thing; */
 
 public class EmergentCall extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
+    protected LocationManager locationManager;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -53,78 +52,10 @@ public class EmergentCall extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notifyEmergency();
         setContentView(R.layout.activity_emergent_call);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-
-        /*mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        final Location myCurrentLocation = new Location("dummy");
-        myCurrentLocation.setLongitude(0.0);
-        myCurrentLocation.setLatitude(0.0);
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-
-                            /*String msg = " Current Location: " +
-                                    Double.toString(location.getLatitude()) + ",    " +
-                                    Double.toString(location.getLongitude());
-                            System.out.println(msg);
-                            ((TextView)findViewById(R.id.content_emergent_call)).setText(msg);*/
-
-                            //Set my current location
-                            //myCurrentLocation.setLatitude(location.getLatitude());
-                            //myCurrentLocation.setLongitude(location.getLongitude());
-                    //    }
-                  //  }
-                //});
-
-
-        //SmsManager.getDefault().sendTextMessage(phoneNumbers.get(0), null, smsBody, null,null);
-        //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNumbers.get(0)));
-        //intent.putExtra("sms_body", smsBody);
-        //startActivity(intent);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-        /*List<String> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(0, "+905339677890");
-
-        String smsBody = "Ben Büşra. Acil durum mesajıdır. Yardımına ihtiyacım var. Konum bilgim şöyle: http://maps.google.com/?q=" + myCurrentLocation.getLatitude() + "," + myCurrentLocation.getLongitude();
-
-
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + phoneNumbers.get(0)));
-
-
-        //sms otomatik atılacak, benim göndermemi beklemeyecek. Konum bilgisi gelmiyor. Başarılı bir şekilde alınması sağlanacak.
-        Intent smsIntent = new Intent(Intent.ACTION_SENDTO,
-                Uri.parse("sms:" + phoneNumbers.get(0)));
-        smsIntent.putExtra("sms_body", smsBody);
-        //startActivity(smsIntent);
-
-        if (ActivityCompat.checkSelfPermission(EmergentCall.this,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        System.out.println("It will call " + phoneNumbers.get(0));
-        //startActivity(callIntent);
-        System.out.println("It must have called!");*/
-
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-      //  client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -136,50 +67,26 @@ public class EmergentCall extends AppCompatActivity {
 
 
     public void notifyEmergency(){
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        /*locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Criteria c=new Criteria();
+        //if we pass false than
+        //it will check first satellite location than Internet and than Sim Network
+        String provider=locationManager.getBestProvider(c, false);
+        //LocationListener locationListener=new LocationListener();
+        locationManager.requestLocationUpdates(provider,1000,0, this);
+        Location location=locationManager.getLastKnownLocation(provider);
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();*/
 
-        final Location myCurrentLocation = new Location("dummy");
-        myCurrentLocation.setLongitude(0.0);
-        myCurrentLocation.setLatitude(0.0);
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
+        GPSTracker tracker = new GPSTracker(this);
+        double longitude = tracker.getLongitude();
+        double latitude = tracker.getLatitude();
 
-                            /*String msg = " Current Location: " +
-                                    Double.toString(location.getLatitude()) + ",    " +
-                                    Double.toString(location.getLongitude());
-                            System.out.println(msg);
-                            ((TextView)findViewById(R.id.content_emergent_call)).setText(msg);*/
-
-                            //Set my current location
-                            myCurrentLocation.setLatitude(location.getLatitude());
-                            myCurrentLocation.setLongitude(location.getLongitude());
-                        }
-                    }
-                });
-
-
-        //SmsManager.getDefault().sendTextMessage(phoneNumbers.get(0), null, smsBody, null,null);
-        //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNumbers.get(0)));
-        //intent.putExtra("sms_body", smsBody);
-        //startActivity(intent);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
         List<String> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(0, "+905339677890");
 
-        String smsBody = "Ben Büşra. Acil durum mesajıdır. Yardımına ihtiyacım var. Konum bilgim şöyle: http://maps.google.com/?q=" + myCurrentLocation.getLatitude() + "," + myCurrentLocation.getLongitude();
+        String smsBody = "Ben Büşra. Acil durum mesajıdır. Yardımına ihtiyacım var. Konum bilgim şöyle: http://maps.google.com/?q=" + latitude + "," + longitude;
 
 
         Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -190,7 +97,7 @@ public class EmergentCall extends AppCompatActivity {
         Intent smsIntent = new Intent(Intent.ACTION_SENDTO,
                 Uri.parse("sms:" + phoneNumbers.get(0)));
         smsIntent.putExtra("sms_body", smsBody);
-        //startActivity(smsIntent);
+        startActivity(smsIntent);
 
         if (ActivityCompat.checkSelfPermission(EmergentCall.this,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -263,6 +170,7 @@ public class EmergentCall extends AppCompatActivity {
         }
     }
 
+
     public void listContacts(View v) throws FileNotFoundException {
         String path = getFilesDir().getAbsolutePath();
         File file = new File(path+"/contacts");
@@ -272,6 +180,8 @@ public class EmergentCall extends AppCompatActivity {
             Toast.makeText(this, scan.nextLine(), Toast.LENGTH_LONG).show();
         }
     }
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
