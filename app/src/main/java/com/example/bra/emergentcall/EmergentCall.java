@@ -26,27 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//import com.google.android.gms.appindexing.Action;
-//import com.google.android.gms.appindexing.AppIndex;
-//import com.google.android.gms.appindexing.Thing;
-
-/*import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing; */
 
 public class EmergentCall extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     protected LocationManager locationManager;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+
     private GoogleApiClient client;
     private final int PICK_CONTACT = 1; //birden çok temas adresi seçimi için listeleştirilebilir.
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+
     private GoogleApiClient client2;
 
     @Override
@@ -67,17 +54,6 @@ public class EmergentCall extends AppCompatActivity {
 
 
     public void notifyEmergency(){
-        /*locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Criteria c=new Criteria();
-        //if we pass false than
-        //it will check first satellite location than Internet and than Sim Network
-        String provider=locationManager.getBestProvider(c, false);
-        //LocationListener locationListener=new LocationListener();
-        locationManager.requestLocationUpdates(provider,1000,0, this);
-        Location location=locationManager.getLastKnownLocation(provider);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();*/
 
         GPSTracker tracker = new GPSTracker(this);
         double longitude = tracker.getLongitude();
@@ -108,9 +84,6 @@ public class EmergentCall extends AppCompatActivity {
         System.out.println("It must have called!");
 
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        //  client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -180,41 +153,4 @@ public class EmergentCall extends AppCompatActivity {
             Toast.makeText(this, scan.nextLine(), Toast.LENGTH_LONG).show();
         }
     }
-
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    /*public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("EmergentCall Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client2.connect();
-        AppIndex.AppIndexApi.start(client2, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client2, getIndexApiAction());
-        client2.disconnect();
-    }*/
 }
