@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,18 +63,20 @@ public class EmergentCall extends AppCompatActivity {
         List<String> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(0, "+905339677890");
 
-        String smsBody = "Ben Büşra. Acil durum mesajıdır. Yardımına ihtiyacım var. Konum bilgim şöyle: http://maps.google.com/?q=" + latitude + "," + longitude;
-
+        //String smsBody = "Ben Büşra. Acil durum mesajıdır. Yardımına ihtiyacım var. Konum bilgim şöyle: http://maps.google.com/?q=" + latitude + "," + longitude;
+        String smsBody = "Konumum:  http://maps.google.com/?q=" + latitude + "," + longitude;
 
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:" + phoneNumbers.get(0)));
 
 
-        //sms otomatik atılacak, benim göndermemi beklemeyecek. Konum bilgisi gelmiyor. Başarılı bir şekilde alınması sağlanacak.
-        Intent smsIntent = new Intent(Intent.ACTION_SENDTO,
+        //sms otomatik atılacak, benim göndermemi beklemeyecek.
+        sendSMS(phoneNumbers.get(0), smsBody);
+
+        /*Intent smsIntent = new Intent(Intent.ACTION_SENDTO,
                 Uri.parse("sms:" + phoneNumbers.get(0)));
         smsIntent.putExtra("sms_body", smsBody);
-        startActivity(smsIntent);
+        startActivity(smsIntent);*/
 
         if (ActivityCompat.checkSelfPermission(EmergentCall.this,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -143,6 +146,18 @@ public class EmergentCall extends AppCompatActivity {
         }
     }
 
+    public void sendSMS(String phoneNo, String msg) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            Toast.makeText(getApplicationContext(), "Message Sent",
+                    Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(),ex.getMessage().toString(),
+                    Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+    }
 
     public void listContacts(View v) throws FileNotFoundException {
         String path = getFilesDir().getAbsolutePath();
